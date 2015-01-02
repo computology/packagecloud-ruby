@@ -17,6 +17,10 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']
 
+  gem.add_runtime_dependency 'excon', '~> 0.40'
+  gem.add_runtime_dependency 'json_pure', '~> 1'
+  gem.add_runtime_dependency 'mime', '~> 0.4'
+
   gem.add_development_dependency 'bundler', '~> 1.0'
   gem.add_development_dependency 'rake', '~> 0.8'
   gem.add_development_dependency 'rspec', '~> 2.4'
