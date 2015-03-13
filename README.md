@@ -88,16 +88,16 @@ go to your [Account Settings](https://packagecloud.io/api_token) to see your API
   ```ruby
   # Create RPM Packages (takes IO object for file)
   distro_id = @client.find_distribution_id("el/6")
-  rpm_package = Package.new(open("libcurl-0.1.2.rpm"), distro_id)
+  rpm_package = Packagecloud::Package.new(open("libcurl-0.1.2.rpm"), distro_id)
 
   # Creating gem Packages (no distribution required)
-  gem_package = Package.new(open("rails-4.0.0.gem"))
+  gem_package = Packagecloud::Package.new(open("rails-4.0.0.gem"))
 
   # Creating source Packages
   distro_id = @client.find_distribution_id("ubuntu/trusty")
   source_files = { "jake_1.0.orig.tar.bz2" => open("/path/jake_1.0.orig.tar.bz2"),
                    "jake_1.0-7.debian.tar.gz" => open("/path/jake_1.0-7.debian.tar.gz") }
-  dsc_package = Package.new("jake_1.0-7.dsc", distro_id, source_files)
+  dsc_package = Packagecloud::Package.new("jake_1.0-7.dsc", distro_id, source_files)
 
   # Upload Packages
   @client.put_package("test_repo", gem_package)
@@ -107,6 +107,6 @@ go to your [Account Settings](https://packagecloud.io/api_token) to see your API
 
 ## Copyright
 
-Copyright (c) 2014 Computology, LLC
+Copyright (c) 2014-2015 Computology, LLC
 
 See LICENSE.txt for details.
