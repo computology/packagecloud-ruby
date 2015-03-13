@@ -133,6 +133,12 @@ describe Packagecloud do
     expect(result.response["name"]).to eq("test_repo")
   end
 
+  it "should raise if the repo name is invalid" do
+    expect do
+      result = @client.repository("hi/test_repo")
+    end.to raise_error(InvalidRepoNameException)
+  end
+
   it "GET /api/v1/repos/joedamato/invalid_repo.json (invalid repo)" do
     result = @client.repository("invalid_repo")
     expect(result.succeeded).to be_falsey
@@ -141,6 +147,12 @@ describe Packagecloud do
   it "should have a distinct User-Agent that includes the version" do
     @client.distributions
     expect($request["User-Agent"]).to eq("packagecloud-ruby #{Packagecloud::VERSION}/test_client")
+  end
+
+  it "should raise if the username has an @ in it" do
+    expect do
+      credentials = Credentials.new("hi@test.com", "test_token")
+    end.to raise_error(InvalidUsernameException)
   end
 
   it "should raise if api has advanced too far" do
@@ -177,7 +189,6 @@ describe Packagecloud do
   end
 
   describe "find_distribution_id" do
-
     it "should find ubuntu/breezy" do
       id = @client.find_distribution_id("ubuntu/breezy")
       expect(id).to be(3)
@@ -199,6 +210,4 @@ describe Packagecloud do
       }.to raise_error
     end
   end
-
-
 end
