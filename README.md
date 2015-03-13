@@ -93,7 +93,7 @@ go to your [Account Settings](https://packagecloud.io/api_token) to see your API
   For example:
 
   ```ruby
-  # This is incorrect, it should just be "my_repo"
+  # INCORRECT: this should just be "my_repo"
   repo = @client.repository("user/my_repo")
   ```
 
