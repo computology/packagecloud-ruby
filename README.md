@@ -24,8 +24,8 @@ Ruby library for communicating with the [packagecloud.io](https://packagecloud.i
 
 ## Getting your API token
 
-Login to [packagecloud.io](https://packagecloud.io) and visit
-the [API docs](https://packagecloud.io/docs/api#api_tokens) to see your token.
+Login to [packagecloud.io](https://packagecloud.io) and
+go to your [Account Settings](https://packagecloud.io/api_token) to see your API token.
 
 ## Creating a Client
 
