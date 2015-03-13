@@ -80,8 +80,8 @@ Ruby library for communicating with the [packagecloud.io](https://packagecloud.i
 
   ```ruby
   # Create Packages (takes IO object for file)
-  gem_package = Package.new(open("rails-4.0.0.gem"))
   rpm_package = Package.new(open("libcurl-0.1.2.rpm"), 12) # 12 being the distribution id for centos/6, for example
+  gem_package = Package.new(open("rails-4.0.0.gem"))       # distribution id's not required for gems
 
   # Creating source Packages
   source_files = { "jake_1.0.orig.tar.bz2" => open("/path/jake_1.0.orig.tar.bz2"),
