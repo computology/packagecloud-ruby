@@ -22,13 +22,18 @@ Ruby library for communicating with the [packagecloud.io](https://packagecloud.i
   gem install packagecloud-ruby
   ```
 
+## Getting your API token
+
+Login to [packagecloud.io](https://packagecloud.io) and visit
+the [API docs](https://packagecloud.io/docs/api#api_tokens) to see your token.
+
 ## Creating a Client
 
   ```ruby
   require 'packagecloud'
 
-  # Create a client
-  credentials = Packagecloud::Credentials.new("joedamato", "test_token")
+  # Create a client using your username and API token
+  credentials = Packagecloud::Credentials.new("joedamato", "my_api_token")
   @client = Packagecloud::Client.new(credentials)
 
   ```
