@@ -29,6 +29,10 @@ go to your [Account Settings](https://packagecloud.io/api_token) to see your API
 
 ## Creating a Client
 
+  Note that you should not use the email address associated with your
+  [packagecloud.io](https://packagecloud.io) account when accessing the API.
+  Please use your username on the site.
+
   ```ruby
   require 'packagecloud'
 
@@ -81,6 +85,16 @@ go to your [Account Settings](https://packagecloud.io/api_token) to see your API
   # Creating a repository
   @client.create_repository("my_repo")
 
+  ```
+
+  When specifiying your repository name, you should use just the name and not
+  the fully qualified name (fqname).
+
+  For example:
+
+  ```ruby
+  # INCORRECT: this should just be "my_repo"
+  repo = @client.repository("user/my_repo")
   ```
 
 ### Packages

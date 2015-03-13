@@ -24,6 +24,22 @@ module Packagecloud
     end
   end
 
+  class InvalidRepoNameException < StandardError
+    attr_reader :object
+
+    def initialize(object = nil)
+      @object = object
+    end
+  end
+
+  class InvalidUsernameException < StandardError
+    attr_reader :object
+
+    def initialize(object = nil)
+      @object = object
+    end
+  end
+
   class Client
     attr_reader :connection
     attr_reader :credentials
@@ -54,6 +70,7 @@ module Packagecloud
     end
 
     def repository(repo)
+      assert_valid_repo_name(repo)
       response = get("/api/v1/repos/#{username}/#{repo}.json")
       parsed_json_result(response)
     end
@@ -64,6 +81,7 @@ module Packagecloud
     end
 
     def create_repository(repo, private=false)
+      assert_valid_repo_name(repo)
       privacy = private ? 1 : 0
       body = { "repository" => { "name" => repo, "private" => privacy.to_s } }
       response = post("/api/v1/repos.json", body.to_json)
@@ -71,6 +89,7 @@ module Packagecloud
     end
 
     def package_contents(repo, package)
+      assert_valid_repo_name(repo)
       url = "/api/v1/repos/#{username}/#{repo}/packages/contents.json"
 
       mixed_msg = MIME::Multipart::FormData.new
@@ -85,6 +104,8 @@ module Packagecloud
     end
 
     def put_package(repo, package)
+      assert_valid_repo_name(repo)
+
       url = "/api/v1/repos/#{username}/#{repo}/packages.json"
 
       mixed_msg = MIME::Multipart::FormData.new
@@ -127,6 +148,15 @@ module Packagecloud
     end
 
     private
+      def assert_valid_repo_name(repo)
+        if repo.include?("/")
+          raise InvalidRepoNameException.new("The repo name: #{repo} is " \
+                                             "invalid. It looks like you are " \
+                                             "using the fully qualified name " \
+                                             "(fqname) instead of just the " \
+                                             "repo name. Please try again.")
+        end
+      end
 
       def assert_compatible_version
         result = gem_version
