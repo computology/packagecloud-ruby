@@ -86,10 +86,12 @@ go to your [Account Settings](https://packagecloud.io/api_token) to see your API
 ### Packages
 
   ```ruby
-  # Create Packages (takes IO object for file)
+  # Create RPM Packages (takes IO object for file)
   distro_id = @client.find_distribution_id("el/6")
   rpm_package = Package.new(open("libcurl-0.1.2.rpm"), distro_id)
-  gem_package = Package.new(open("rails-4.0.0.gem")) # distribution id's not required for gems
+
+  # Creating gem Packages (no distribution required)
+  gem_package = Package.new(open("rails-4.0.0.gem"))
 
   # Creating source Packages
   distro_id = @client.find_distribution_id("ubuntu/trusty")
