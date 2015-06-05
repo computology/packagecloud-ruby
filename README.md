@@ -111,7 +111,7 @@ go to your [Account Settings](https://packagecloud.io/api_token) to see your API
   distro_id = @client.find_distribution_id("ubuntu/trusty")
   source_files = { "jake_1.0.orig.tar.bz2" => open("/path/jake_1.0.orig.tar.bz2"),
                    "jake_1.0-7.debian.tar.gz" => open("/path/jake_1.0-7.debian.tar.gz") }
-  dsc_package = Packagecloud::Package.new("jake_1.0-7.dsc", distro_id, source_files)
+  dsc_package = Packagecloud::Package.new(open("jake_1.0-7.dsc"), distro_id, source_files)
 
   # Upload Packages
   @client.put_package("test_repo", gem_package)
