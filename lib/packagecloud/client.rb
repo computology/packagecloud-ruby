@@ -103,6 +103,12 @@ module Packagecloud
       parsed_json_result(response)
     end
 
+    def list_packages(repo)
+      assert_valid_repo_name(repo)
+      response = get("/api/v1/repos/#{username}/#{repo}/packages.json")
+      parsed_json_result(response)
+    end
+
     def put_package(repo, package)
       assert_valid_repo_name(repo)
 
