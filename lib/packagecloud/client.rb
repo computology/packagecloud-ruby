@@ -109,6 +109,13 @@ module Packagecloud
       parsed_json_result(response)
     end
 
+    def delete_package(repo, distro, distro_release, package_filename)
+      assert_valid_repo_name(repo)
+      url = "/api/v1/repos/#{username}/#{repo}/#{distro}/#{distro_release}/#{package_filename}"
+      response = delete(url)
+      parsed_json_result(response)
+    end
+
     def put_package(repo, package)
       assert_valid_repo_name(repo)
 
@@ -216,6 +223,10 @@ module Packagecloud
 
       def get(url)
         request(url, :get)
+      end
+
+      def delete(url)
+        request(url, 'DELETE')
       end
 
       def username
