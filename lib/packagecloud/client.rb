@@ -160,6 +160,13 @@ module Packagecloud
       end
     end
 
+    def create_read_tokens(repo, master_token_id, read_token_name)
+      assert_valid_repo_name(repo)
+      url = "/api/v1/repos/#{username}/#{repo}/master_tokens/#{master_token_id}/read_tokens.json"
+      response = post(url, "read_token[name]=#{read_token_name}", "application/x-www-form-urlencoded")
+      parsed_json_result(response)
+    end
+
     private
       def assert_valid_repo_name(repo)
         if repo.include?("/")
