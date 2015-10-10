@@ -1,4 +1,4 @@
-require 'json/pure'
+require 'json/pure' unless JSON::Ext
 require 'mime'
 require 'excon'
 require 'packagecloud/result'
