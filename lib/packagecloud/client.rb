@@ -116,15 +116,36 @@ module Packagecloud
       parsed_json_result(response)
     end
 
-    def put_package(repo, package)
+    def id_for_distro_query_or_id(query_or_id)
+      if query_or_id.is_a? Fixnum
+        query_or_id
+      else
+        find_distribution_id(query_or_id)
+      end
+    end
+
+    ## This is to handle older calls to put_package where
+    ## Package had distro_version_id set
+    def determine_distro_version_from_package_or_param(package, query_or_id)
+      if query_or_id != nil
+        id_for_distro_query_or_id(query_or_id)
+      else
+        if package.distro_version_id
+          package.distro_version_id
+        end
+      end
+    end
+
+    def put_package(repo, package, query_or_id=nil)
       assert_valid_repo_name(repo)
 
       url = "/api/v1/repos/#{username}/#{repo}/packages.json"
 
       mixed_msg = MIME::Multipart::FormData.new
 
-      if package.distro_version_id != nil
-        mixed_msg.add(MIME::Text.new(package.distro_version_id), "package[distro_version_id]")
+      distro_version_id = determine_distro_version_from_package_or_param(package, query_or_id)
+      if distro_version_id
+        mixed_msg.add(MIME::Text.new(distro_version_id), "package[distro_version_id]")
       end
 
       pkg_data = MIME::Application.new(package.file.read)
@@ -143,7 +164,7 @@ module Packagecloud
     end
 
     def find_distribution_id(distro_query)
-      distros = distributions
+      distros = distributions #TODO: perhaps memoize this per session to save on lookups
       if distros.succeeded
         deb_distros = distro_map distros.response["deb"]
         rpm_distros = distro_map distros.response["rpm"]
