@@ -1,5 +1,7 @@
 ## packagecloud-ruby
 
+![https://travis-ci.org/computology/packagecloud-ruby.svg](Build Status)
+
 Ruby library for communicating with the [packagecloud.io](https://packagecloud.io) API.
 
 * [Homepage](https://rubygems.org/gems/packagecloud-ruby)
