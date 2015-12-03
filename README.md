@@ -1,6 +1,6 @@
 ## packagecloud-ruby
 
-![Build Status](https://travis-ci.org/computology/packagecloud-ruby.svg "Build Status")
+![Build Status](https://travis-ci.org/computology/packagecloud-ruby.svg?branch=master "Build Status")
 
 
 Ruby library for communicating with the [packagecloud.io](https://packagecloud.io) API.
