@@ -1,7 +1,7 @@
 module Packagecloud
   MAJOR_VERSION = "0"
   MINOR_VERSION = "2"
-  PATCH_VERSION = "22"
+  PATCH_VERSION = "23"
 
   VERSION = [MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION].join(".")
 end
