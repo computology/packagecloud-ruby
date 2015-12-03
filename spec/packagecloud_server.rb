@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'webrick'
 
 class PackagecloudServer < WEBrick::HTTPServlet::AbstractServlet
