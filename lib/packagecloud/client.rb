@@ -109,6 +109,12 @@ module Packagecloud
       parsed_json_result(response)
     end
 
+    def gem_show(repo, gem, version)
+      assert_valid_repo_name(repo)
+      response = get("/api/v1/repos/#{username}/#{repo}/package/gem/#{gem}/#{version}.json")
+      parsed_json_result(response)
+    end
+
     def delete_package(repo, distro, distro_release, package_filename)
       assert_valid_repo_name(repo)
       url = "/api/v1/repos/#{username}/#{repo}/#{distro}/#{distro_release}/#{package_filename}"
