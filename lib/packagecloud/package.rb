@@ -5,17 +5,27 @@ module Packagecloud
     attr_reader :distro_version_id
     attr_accessor :source_files
     attr_reader :filename
+    attr_reader :client
 
-    def initialize(file,
-                   distro_version_id=nil,
-                   source_files={},
-                   filename=rand(2**32).to_s(36))
+    def initialize(options = {})
+      if options[:file].nil?
+        raise ArgumentError, 'file cannot be nil' if file.nil?
+      end
+      if options[:file].is_a? String
+        options[:file] = File.open(options[:file])
+      end
+      if options[:file].is_a? File
+        options[:filename] = File.basename(options[:file].path)
+      end
+      if options[:filename].nil?
+        raise ArgumentError, 'filename cannot be nil' if file.nil?
+      end
 
-      raise ArgumentError, 'file cannot be nil' if file.nil?
-      @file = file
-      @filename = filename
-      @distro_version_id = distro_version_id
-      @source_files = source_files
+      @file = options[:file]
+      @filename = options[:filename]
+      @distro_version_id = options[:distro_version_id]
+      @source_files = options[:source_files] || {}
+      @client = options[:client]
     end
 
   end

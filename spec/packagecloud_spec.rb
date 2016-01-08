@@ -25,7 +25,7 @@ describe Packagecloud do
   end
 
   it "should have a VERSION constant" do
-    subject.const_get('VERSION').should_not be_empty
+    expect(subject.const_get('VERSION')).to_not be_empty
   end
 
   it "GET api/v1/distributions.json" do
@@ -42,9 +42,9 @@ describe Packagecloud do
   end
 
   it "POST debian package /api/v1/repos/joedamato/test_repo/packages.json" do
-    deb = File.dirname(__FILE__) + '/fixtures/libampsharp2.0-cil_2.0.4-1_all.deb'
-    size = File.size(deb)
-    package = Package.new(open(deb), 22)
+    path = "spec/fixtures/libampsharp2.0-cil_2.0.4-1_all.deb"
+    size = File.size(path)
+    package = Package.new(:file => path, :distro_version_id => 22)
 
     result = @client.put_package("test_repo", package)
     expect(result.succeeded).to be_truthy
@@ -70,8 +70,7 @@ describe Packagecloud do
     jake_debian_size = File.size(jake_debian)
     combined_size = dsc_size + jake_orig_size + jake_debian_size
 
-    #TODO consider opening IO objects automatically for paths
-    package = Package.new(open(dsc), 22, source_packages)
+    package = Package.new(:file => dsc, :distro_version_id => 22, :source_files => source_packages)
 
     result = @client.put_package("test_repo", package)
     expect(result.succeeded).to be_truthy
@@ -85,9 +84,9 @@ describe Packagecloud do
   end
 
   it "POST /api/v1/repos/joedamato/test_repo/packages/contents.json" do
-    dsc = File.dirname(__FILE__) + '/fixtures/natty_dsc/jake_1.0-7.dsc'
+    dsc = 'spec/fixtures/natty_dsc/jake_1.0-7.dsc'
     size = File.size(dsc)
-    package = Package.new(open(dsc))
+    package = Package.new(:file => dsc)
 
     result = @client.package_contents("test_repo", package)
     expect(result.succeeded).to be_truthy
@@ -153,31 +152,6 @@ describe Packagecloud do
     expect do
       credentials = Credentials.new("hi@test.com", "test_token")
     end.to raise_error(InvalidUsernameException)
-  end
-
-  it "should raise if api has advanced too far" do
-    current = Packagecloud::MINOR_VERSION
-    Packagecloud::MINOR_VERSION = "1"
-    credentials = Credentials.new("joedamato", "test_token")
-    connection = Connection.new("http", "localhost", 8000)
-
-    expect {
-      Client.new(credentials, "test_client", connection)
-    }.to raise_error(GemOutOfDateException)
-    # Set this back to current
-    Packagecloud::MINOR_VERSION = current
-  end
-
-  it "should suggest upgrading if patch version is higher" do
-    current = Packagecloud::PATCH_VERSION
-    Packagecloud::PATCH_VERSION = "0"
-    credentials = Credentials.new("joedamato", "test_token")
-    connection = Connection.new("http", "localhost", 8000)
-    $stdout.should_receive(:write).with("[WARNING] There's a newer version of the packagecloud-ruby library. Update as soon as possible!")
-    $stdout.should_receive(:write).with("\n")
-    Client.new(credentials, "test_client", connection)
-    # Set this back to current
-    Packagecloud::PATCH_VERSION = current
   end
 
   it "invalid credentials should raise unauthenticated exception" do

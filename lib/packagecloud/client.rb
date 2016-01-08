@@ -6,7 +6,7 @@ require 'packagecloud/connection'
 require 'packagecloud/version'
 
 module Packagecloud
-  SUPPORTED_EXTENSIONS = ["deb", "rpm", "gem", "dsc"]
+  SUPPORTED_EXTENSIONS = ["deb", "dsc", "gem", "rpm", "whl", "zip", "egg", "egg-info", "tar", "bz2", "Z", "gz"]
 
   class UnauthenticatedException < StandardError
     attr_reader :object
@@ -44,7 +44,7 @@ module Packagecloud
     attr_reader :connection
     attr_reader :credentials
 
-    def initialize(credentials, user_agent="default", connection=Connection.new)
+    def initialize(credentials, user_agent="packagecloud-ruby #{Packagecloud::VERSION}", connection=Connection.new)
       @credentials = credentials
       @connection = connection
       @user_agent = user_agent
@@ -56,7 +56,6 @@ module Packagecloud
 
       @excon = Excon.new("#{scheme}://#{token}@#{host}:#{port}")
       assert_valid_credentials
-      assert_compatible_version
     end
 
     def distributions
@@ -175,21 +174,6 @@ module Packagecloud
                                              "using the fully qualified name " \
                                              "(fqname) instead of just the " \
                                              "repo name. Please try again.")
-        end
-      end
-
-      def assert_compatible_version
-        result = gem_version
-        if result.succeeded
-          if result.response["minor"] != MINOR_VERSION
-            raise GemOutOfDateException.new("This library is out of date, please update it!")
-          elsif result.response["patch"].to_i > PATCH_VERSION.to_i
-            puts "[WARNING] There's a newer version of the packagecloud-ruby library. Update as soon as possible!"
-          end
-        elsif result.response.downcase.include?('unauthenticated')
-          raise UnauthenticatedException.new
-        else
-          raise "Unable to get gem version from API: #{result.response}"
         end
       end
 
