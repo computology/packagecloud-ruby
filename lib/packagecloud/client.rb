@@ -152,7 +152,8 @@ module Packagecloud
       if distros.succeeded
         deb_distros = distro_map distros.response["deb"]
         rpm_distros = distro_map distros.response["rpm"]
-        all_distros = deb_distros.merge(rpm_distros)
+        py_distros = distro_map distros.response["py"]
+        all_distros = deb_distros.merge(rpm_distros).merge(py_distros)
         result = all_distros.select { |distro, id| distro.include?(distro_query) }
         if result.size > 1
           keys = result.map { |x| x.first }.join(' ')

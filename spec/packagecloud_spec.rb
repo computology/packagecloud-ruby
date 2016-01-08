@@ -192,6 +192,11 @@ describe Packagecloud do
       expect(id).to be(3)
     end
 
+    it "should find python" do
+      id = @client.find_distribution_id("python")
+      expect(id).to be(166)
+    end
+
     it "should return nil for invalid distro" do
       id = @client.find_distribution_id("ubuasdalsdntu/breezy")
       expect(id).to be_nil
