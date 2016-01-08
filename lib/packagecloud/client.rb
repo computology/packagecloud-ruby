@@ -115,15 +115,21 @@ module Packagecloud
       parsed_json_result(response)
     end
 
-    def put_package(repo, package)
+    def put_package(repo, package, distro_version_id)
       assert_valid_repo_name(repo)
 
       url = "/api/v1/repos/#{username}/#{repo}/packages.json"
 
       mixed_msg = MIME::Multipart::FormData.new
 
-      if package.distro_version_id != nil
-        mixed_msg.add(MIME::Text.new(package.distro_version_id), "package[distro_version_id]")
+      if distro_version_id != nil
+        if distro_version_id.is_a? String
+          distro_version = find_distribution_id(distro_version_id)
+          raise "Cannot find distribution: #{distro_version_id}" if distro_version.nil?
+          mixed_msg.add(MIME::Text.new(distro_version), "package[distro_version_id]")
+        else
+          mixed_msg.add(MIME::Text.new(distro_version_id), "package[distro_version_id]")
+        end
       end
 
       pkg_data = MIME::Application.new(package.file.read)

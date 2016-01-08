@@ -44,9 +44,28 @@ describe Packagecloud do
   it "POST debian package /api/v1/repos/joedamato/test_repo/packages.json" do
     path = "spec/fixtures/libampsharp2.0-cil_2.0.4-1_all.deb"
     size = File.size(path)
-    package = Package.new(:file => path, :distro_version_id => 22)
+    package = Package.new(:file => path)
 
-    result = @client.put_package("test_repo", package)
+    result = @client.put_package("test_repo", package, 22)
+    expect(result.succeeded).to be_truthy
+
+    #assert content type is set correctly
+    expect($request.content_type).to include("boundary=")
+    expect($request.content_type).to include("multipart/form-data")
+
+    # assert body is at least bigger than fixture file
+    expect($request.content_length > size).to be_truthy
+  end
+
+  it "POST debian package /api/v1/repos/joedamato/test_repo/packages.json with string distro_version_id" do
+    allow(@client).to receive(:find_distribution_id).and_return(3)
+    path = "spec/fixtures/libampsharp2.0-cil_2.0.4-1_all.deb"
+    size = File.size(path)
+    package = Package.new(:file => path)
+
+    result = @client.put_package("test_repo", package, "ubuntu/breezy")
+
+    expect(@client).to have_received(:find_distribution_id)
     expect(result.succeeded).to be_truthy
 
     #assert content type is set correctly
@@ -70,9 +89,9 @@ describe Packagecloud do
     jake_debian_size = File.size(jake_debian)
     combined_size = dsc_size + jake_orig_size + jake_debian_size
 
-    package = Package.new(:file => dsc, :distro_version_id => 22, :source_files => source_packages)
+    package = Package.new(:file => dsc, :source_files => source_packages)
 
-    result = @client.put_package("test_repo", package)
+    result = @client.put_package("test_repo", package, 22)
     expect(result.succeeded).to be_truthy
 
     #assert content type is set correctly

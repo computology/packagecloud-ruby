@@ -2,7 +2,6 @@ module Packagecloud
   class Package
 
     attr_reader :file
-    attr_reader :distro_version_id
     attr_accessor :source_files
     attr_reader :filename
     attr_reader :client
@@ -23,7 +22,6 @@ module Packagecloud
 
       @file = options[:file]
       @filename = options[:filename]
-      @distro_version_id = options[:distro_version_id]
       @source_files = options[:source_files] || {}
       @client = options[:client]
     end

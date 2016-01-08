@@ -33,11 +33,6 @@ describe Package do
     expect(pkg.filename).to eql("chewbacca-1.0.0.gem")
   end
 
-  it "should handle raw distro_version_id" do
-    pkg = Package.new(:file => "spec/fixtures/chewbacca-1.0.0.gem", :distro_version_id => 22)
-    expect(pkg.distro_version_id).to eql(22)
-  end
-
   it "should handle source_files options" do
     pkg = Package.new(:file => "spec/fixtures/natty_dsc/jake_1.0-7.dsc", :source_files => {"foo" => "bar"})
     expect(pkg.source_files).to eql({"foo" => "bar"})
