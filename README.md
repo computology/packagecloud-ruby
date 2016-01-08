@@ -90,7 +90,7 @@ go to your [Account Settings](https://packagecloud.io/api_token) to see your API
 
   ```
 
-  When specifiying your repository name, you should use just the name and not
+  When specifying your repository name, you should use just the name and not
   the fully qualified name (fqname).
 
   For example:
@@ -103,27 +103,25 @@ go to your [Account Settings](https://packagecloud.io/api_token) to see your API
 ### Packages
 
   ```ruby
-  # Create RPM Packages (takes IO object for file)
-  distro_id = @client.find_distribution_id("el/6")
-  rpm_package = Packagecloud::Package.new(open("libcurl-0.1.2.rpm"), distro_id)
+  # Create RPM Packages (can take File, IO, or path argument)
+  rpm_package = Packagecloud::Package.new(:file => "libcurl-0.1.2.rpm")
 
-  # Creating gem Packages (no distribution required)
-  gem_package = Packagecloud::Package.new(open("rails-4.0.0.gem"))
+  # Creating gem Packages using IO (needs :filename passed in)
+  gem_package = Packagecloud::Package.new(:file => io_object, :filename => "rails-4.0.0.gem")
 
   # Creating source Packages
-  distro_id = @client.find_distribution_id("ubuntu/trusty")
   source_files = { "jake_1.0.orig.tar.bz2" => open("/path/jake_1.0.orig.tar.bz2"),
                    "jake_1.0-7.debian.tar.gz" => open("/path/jake_1.0-7.debian.tar.gz") }
-  dsc_package = Packagecloud::Package.new(open("jake_1.0-7.dsc"), distro_id, source_files)
+  dsc_package = Packagecloud::Package.new(:file => "jake_1.0-7.dsc", :source_files => source_files)
 
   # Upload Packages
   @client.put_package("test_repo", gem_package)
-  @client.put_package("test_repo", rpm_package)
-  @client.put_package("test_repo", dsc_package)
+  @client.put_package("test_repo", rpm_package, "el/6")
+  @client.put_package("test_repo", dsc_package, "ubuntu/trusty")
   ```
 
 ## Copyright
 
-Copyright (c) 2014-2015 Computology, LLC
+Copyright (c) 2014-2016 Computology, LLC
 
 See LICENSE.txt for details.
