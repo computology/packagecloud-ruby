@@ -115,7 +115,7 @@ module Packagecloud
       parsed_json_result(response)
     end
 
-    def put_package(repo, package, distro_version_id)
+    def put_package(repo, package, distro_version_id=nil)
       assert_valid_repo_name(repo)
 
       url = "/api/v1/repos/#{username}/#{repo}/packages.json"
