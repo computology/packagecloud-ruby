@@ -26,6 +26,11 @@ class PackagecloudServer < WEBrick::HTTPServlet::AbstractServlet
     response.status = 201
     response['Content-Type'] = "text/plain"
     response.body = "{}"
+    ### Cheap hack to avoid parsing a multipart request here,
+    ### instead we just check that the body isn't impossibly small
+    if (request.body.size < 1000)
+      raise "Request is too small! #{request.body.size}"
+    end
     $request, $response = request, response
   end
 
@@ -55,7 +60,7 @@ class PackagecloudServer < WEBrick::HTTPServlet::AbstractServlet
         if request.request_method == "GET"
           json_response(request, response, REPOS)
         else
-          created_response(request, response)
+          plain_response(request, response, "{}")
         end
       when "/api/v1/repos/joedamato/test_repo.json"
         json_response(request, response, REPO)

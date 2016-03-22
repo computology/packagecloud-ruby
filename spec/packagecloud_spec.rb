@@ -57,6 +57,17 @@ describe Packagecloud do
     expect($request.content_length > size).to be_truthy
   end
 
+  it "POST debian package /api/v1/repos/joedamato/test_repo/packages.json twice" do
+    path = "spec/fixtures/libampsharp2.0-cil_2.0.4-1_all.deb"
+
+    package = Package.new(:file => path)
+
+    @client.put_package("test_repo", package, 22)
+    result = @client.put_package("test_repo", package, 21)
+    expect(result.succeeded).to be_truthy
+  end
+
+
   it "POST gem package /api/v1/repos/joedamato/test_repo/packages.json" do
     path = "spec/fixtures/chewbacca-1.0.0.gem"
     size = File.size(path)
