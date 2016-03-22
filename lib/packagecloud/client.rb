@@ -93,6 +93,7 @@ module Packagecloud
 
       mixed_msg = MIME::Multipart::FormData.new
 
+      package.file.rewind
       pkg_data = MIME::Application.new(package.file.read)
       pkg_data.headers.set('Content-Transfer-Encoding', 'binary')
       mixed_msg.add(pkg_data, "package[package_file]", package.filename)
@@ -132,11 +133,13 @@ module Packagecloud
         end
       end
 
+      package.file.rewind
       pkg_data = MIME::Application.new(package.file.read)
       pkg_data.headers.set('Content-Transfer-Encoding', 'binary')
       mixed_msg.add(pkg_data, "package[package_file]", package.filename)
 
       package.source_files.each do |filename, io|
+        io.rewind
         src_pkg_data = MIME::Application.new(io.read)
         src_pkg_data.headers.set('Content-Transfer-Encoding', 'binary')
         mixed_msg.add(src_pkg_data, "package[source_files][]", filename)
