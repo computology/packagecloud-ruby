@@ -54,7 +54,7 @@ module Packagecloud
       port = self.connection.port
       token = self.credentials.token
 
-      @excon = Excon.new("#{scheme}://#{token}@#{host}:#{port}")
+      @excon = Excon.new("#{scheme}://#{token}@#{host}:#{port}", :connect_timeout => @connection.connect_timeout)
       assert_valid_credentials
     end
 
@@ -243,7 +243,8 @@ module Packagecloud
         if body != nil
           request_params.merge!({ :body => body })
         end
-        @excon.request(request_params)
+
+        @excon.request(request_params.merge({:read_timeout => connection.read_timeout, :write_timeout => connection.write_timeout }))
       end
 
       # returns the parsed body of a successful result
