@@ -208,6 +208,27 @@ describe Packagecloud do
     }.to raise_error(UnauthenticatedException)
   end
 
+  context "timeouts" do
+    it "should have defaults" do
+      credentials = Credentials.new("joedamato", "test_token")
+      connection = Connection.new("http", "localhost", 8000)
+      client = Client.new(credentials, "test_client", connection)
+      expect(client.connection.read_timeout).to eql(60)
+      expect(client.connection.write_timeout).to eql(180)
+      expect(client.connection.connect_timeout).to eql(60)
+    end
+
+    it "should respect passed values" do
+      credentials = Credentials.new("joedamato", "test_token")
+      timeouts = { :connect_timeout => 10, :read_timeout => 80, :write_timeout => 280 }
+      connection = Connection.new("http", "localhost", 8000, timeouts)
+      client = Client.new(credentials, "test_client", connection)
+      expect(client.connection.read_timeout).to eql(80)
+      expect(client.connection.write_timeout).to eql(280)
+      expect(client.connection.connect_timeout).to eql(10)
+    end
+  end
+
   describe "find_distribution_id" do
     it "should find ubuntu/breezy" do
       id = @client.find_distribution_id("ubuntu/breezy")
