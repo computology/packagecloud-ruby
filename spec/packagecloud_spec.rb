@@ -4,20 +4,24 @@ require 'packagecloud_server'
 require 'packagecloud'
 require 'webrick'
 
+@server = Thread.start do
+  server = WEBrick::HTTPServer.new(:Port => 8000)
+  server.mount "/", PackagecloudServer
+  trap "INT" do
+    server.shutdown
+  end
+  server.start
+end
+
+until @server.status == "sleep" do
+  puts "waiting for server to start..."
+end
+
 describe Packagecloud do
 
   include Packagecloud
 
   before(:all) do
-    @server = Thread.start do
-      server = WEBrick::HTTPServer.new(:Port => 8000)
-      server.mount "/", PackagecloudServer
-      trap "INT" do
-        server.shutdown
-      end
-      server.start
-    end
-
     credentials = Credentials.new("joedamato", "test_token")
     connection = Connection.new("http", "localhost", 8000)
 
