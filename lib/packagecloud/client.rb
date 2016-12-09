@@ -89,7 +89,7 @@ module Packagecloud
 
     def package_contents(repo, package, distro_version_id=nil)
       assert_valid_repo_name(repo)
-      if distro_version_id != nil
+      if distro_version_id.nil?
         raise "No distribution supplied for package_contents!"
       end
 
