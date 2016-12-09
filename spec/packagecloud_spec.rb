@@ -138,7 +138,7 @@ describe Packagecloud do
     size = File.size(dsc)
     package = Package.new(:file => dsc)
 
-    result = @client.package_contents("test_repo", package)
+    result = @client.package_contents("test_repo", package, 99999)
     expect(result.succeeded).to be_truthy
     expect(result.response["files"]).not_to be_empty
 
