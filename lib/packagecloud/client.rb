@@ -87,8 +87,12 @@ module Packagecloud
       parsed_json_result(response)
     end
 
-    def package_contents(repo, package)
+    def package_contents(repo, package, distro_version_id=nil)
       assert_valid_repo_name(repo)
+      if distro_version_id.nil?
+        raise "No distribution supplied for package_contents!"
+      end
+
       url = "/api/v1/repos/#{username}/#{repo}/packages/contents.json"
 
       mixed_msg = MIME::Multipart::FormData.new
@@ -97,6 +101,14 @@ module Packagecloud
       pkg_data = MIME::Application.new(package.file.read)
       pkg_data.headers.set('Content-Transfer-Encoding', 'binary')
       mixed_msg.add(pkg_data, "package[package_file]", package.filename)
+
+      if distro_version_id.is_a? String
+        distro_version = find_distribution_id(distro_version_id)
+        raise "Cannot find distribution: #{distro_version_id}" if distro_version.nil?
+        mixed_msg.add(MIME::Text.new(distro_version), "package[distro_version_id]")
+      else
+        mixed_msg.add(MIME::Text.new(distro_version_id), "package[distro_version_id]")
+      end
 
       response = multipart_post(url, mixed_msg)
 
