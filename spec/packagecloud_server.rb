@@ -48,10 +48,21 @@ class PackagecloudServer < WEBrick::HTTPServlet::AbstractServlet
 
     $request, $response = request, response
   end
+
+  def nocontent_response(request, response)
+    response.status = 204
+    response['Content-Type'] = 'text/plain'
+    response.body = ''
+    $request, $response = request, response
+  end
+
+  def can_acess?(request)
+    request["Authorization"] == "Basic dGVzdF90b2tlbjo="
+  end
+
   def route(request, response)
-    if request["Authorization"] && request["Authorization"] != "Basic dGVzdF90b2tlbjo="
-      return forbidden_response(request, response)
-    end
+    return forbidden_response(request, response) unless can_acess?(request)
+
     path = request.path
     case path
       when "/api/v1/distributions.json"
@@ -84,4 +95,15 @@ class PackagecloudServer < WEBrick::HTTPServlet::AbstractServlet
     route(request, response)
   end
 
+  def do_DELETE(request, response)
+    return forbidden_response(request, response) unless can_acess?(request)
+
+    path = request.path
+    case path
+      when "/api/v1/repos/joedamato/test_repo/master_tokens/test_master_token/read_tokens/1"
+        nocontent_response(request, response)
+      else
+        default_response(request, response)
+    end
+  end
 end
