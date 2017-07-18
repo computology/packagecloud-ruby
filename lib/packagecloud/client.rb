@@ -197,6 +197,12 @@ module Packagecloud
       end
     end
 
+    def list_read_tokens(repo, master_token_id)
+      assert_valid_repo_name(repo)
+      response = get("/api/v1/repos/#{username}/#{repo}/master_tokens/#{master_token_id}/read_tokens.json")
+      parsed_json_result(response)
+    end
+
     private
       def assert_valid_repo_name(repo)
         if repo.include?("/")

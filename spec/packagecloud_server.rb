@@ -7,6 +7,7 @@ class PackagecloudServer < WEBrick::HTTPServlet::AbstractServlet
   GEM_VERSION = "{\"major\":\"0\",\"minor\":\"2\",\"patch\":\"1\"}"
   REPO = '{"name": "test_repo","created_at": "2014-08-30T03:51:37.000Z","url": "https://packagecloud.io/joedamato/test_repo","last_push_human": "about 2 months ago","package_count_human": "4 packages","private": true,"fqname": "joedamato/test_repo"}'
   REPOS = "[#{REPO}]"
+  READ_TOKENS = '{"read_tokens":[{"id":"1","name":"testread","value":"notreal"}]}'
 
   def json_response(request, response, body)
     response.status = 200
@@ -81,6 +82,8 @@ class PackagecloudServer < WEBrick::HTTPServlet::AbstractServlet
         plain_response(request, response, PACKAGE_CONTENTS)
       when "/api/v1/gem_version.json"
         json_response(request, response, GEM_VERSION)
+      when "/api/v1/repos/joedamato/test_repo/master_tokens/test_master_token/read_tokens.json"
+        json_response(request, response, READ_TOKENS)
       else
         default_response(request, response)
         $request, $response = request, response

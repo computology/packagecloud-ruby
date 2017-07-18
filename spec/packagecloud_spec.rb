@@ -222,6 +222,12 @@ describe Packagecloud do
     expect(result.succeeded).to be_falsey
   end
 
+  it "lists read tokens" do
+    result = @client.list_read_tokens("test_repo", "test_master_token")
+    expect(result.succeeded).to be_truthy
+    expect(result.response["read_tokens"].first).to eq({"id" => "1", "name" => "testread", "value" => "notreal" })
+  end
+
   context "timeouts" do
     it "should have defaults" do
       credentials = Credentials.new("joedamato", "test_token")
