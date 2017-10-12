@@ -18,7 +18,9 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
 
   gem.add_runtime_dependency 'excon', '~> 0.40'
+
   gem.add_runtime_dependency 'json_pure', '~> 1'
+
   gem.add_runtime_dependency 'multi_json', '~> 1.0'
   gem.add_runtime_dependency 'mime', '~> 0.4'
 
@@ -26,7 +28,11 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake', '~> 0.8'
   gem.add_development_dependency 'rspec', '~> 2.4'
   gem.add_development_dependency 'simplecov', '~> 0.9'
-  gem.add_development_dependency 'json', '1.8.3'
+
+  if RUBY_VERSION < "2.4"
+    gem.add_development_dependency 'json', '1.8.3'
+  end
+
   gem.add_development_dependency 'rubygems-tasks', '~> 0.2'
   gem.add_development_dependency 'yard', '~> 0.8'
 end
