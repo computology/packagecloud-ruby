@@ -188,6 +188,21 @@ module Packagecloud
       parsed_json_result(response)
     end
 
+    def delete_read_token(repo, master_token_id, read_token_id)
+      assert_valid_repo_name(repo)
+      url = "/api/v1/repos/#{username}/#{repo}/master_tokens/#{master_token_id}/read_tokens/#{read_token_id}"
+      response = delete(url)
+      Result.new.tap do |result|
+        result.succeeded = (response.status == 204)
+      end
+    end
+
+    def list_read_tokens(repo, master_token_id)
+      assert_valid_repo_name(repo)
+      response = get("/api/v1/repos/#{username}/#{repo}/master_tokens/#{master_token_id}/read_tokens.json")
+      parsed_json_result(response)
+    end
+
     private
       def assert_valid_repo_name(repo)
         if repo.include?("/")

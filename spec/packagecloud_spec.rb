@@ -212,6 +212,22 @@ describe Packagecloud do
     }.to raise_error(UnauthenticatedException)
   end
 
+  it "deletes read token" do
+    result = @client.delete_read_token("test_repo", "test_master_token", 1)
+    expect(result.succeeded).to be_truthy
+  end
+
+  it "fails to delete invalid read token" do
+    result = @client.delete_read_token("test_repo", "test_master_token", 2323)
+    expect(result.succeeded).to be_falsey
+  end
+
+  it "lists read tokens" do
+    result = @client.list_read_tokens("test_repo", "test_master_token")
+    expect(result.succeeded).to be_truthy
+    expect(result.response["read_tokens"].first).to eq({"id" => "1", "name" => "testread", "value" => "notreal" })
+  end
+
   context "timeouts" do
     it "should have defaults" do
       credentials = Credentials.new("joedamato", "test_token")
