@@ -118,10 +118,11 @@ go to your [Account Settings](https://packagecloud.io/api_token) to see your API
   @client.put_package("test_repo", gem_package)
   @client.put_package("test_repo", rpm_package, "el/6")
   @client.put_package("test_repo", dsc_package, "ubuntu/trusty")
+  @client.put_package("test_repo", node_package, "node")
   ```
 
 ## Copyright
 
-Copyright (c) 2014-2016 Computology, LLC
+Copyright (c) 2014-2018 Computology, LLC
 
 See LICENSE.txt for details.
