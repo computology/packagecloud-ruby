@@ -265,6 +265,11 @@ describe Packagecloud do
       expect(id).to be(166)
     end
 
+    it "should find node" do
+      id = @client.find_distribution_id("node")
+      expect(id).to be(191)
+    end
+
     it "should return nil for invalid distro" do
       id = @client.find_distribution_id("ubuasdalsdntu/breezy")
       expect(id).to be_nil
