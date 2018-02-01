@@ -26,7 +26,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake', '~> 0.8'
   gem.add_development_dependency 'rspec', '~> 2.4'
   gem.add_development_dependency 'simplecov', '~> 0.9'
-  gem.add_development_dependency 'json', '1.8.3'
   gem.add_development_dependency 'rubygems-tasks', '~> 0.2'
   gem.add_development_dependency 'yard', '~> 0.9.11'
 end

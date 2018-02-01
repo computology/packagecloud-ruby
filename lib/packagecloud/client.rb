@@ -6,7 +6,7 @@ require 'packagecloud/connection'
 require 'packagecloud/version'
 
 module Packagecloud
-  SUPPORTED_EXTENSIONS = ["deb", "dsc", "gem", "rpm", "whl", "zip", "egg", "egg-info", "tar", "bz2", "Z", "gz"]
+  SUPPORTED_EXTENSIONS = ["deb", "dsc", "gem", "rpm", "whl", "zip", "egg", "egg-info", "tar", "bz2", "Z", "gz", "tgz"]
 
   class UnauthenticatedException < StandardError
     attr_reader :object
@@ -168,7 +168,8 @@ module Packagecloud
         deb_distros = distro_map distros.response["deb"]
         rpm_distros = distro_map distros.response["rpm"]
         py_distros = distro_map distros.response["py"]
-        all_distros = deb_distros.merge(rpm_distros).merge(py_distros)
+        node_distros = distro_map distros.response["node"]
+        all_distros = deb_distros.merge(rpm_distros).merge(py_distros).merge(node_distros)
         result = all_distros.select { |distro, id| distro.include?(distro_query) }
         if result.size > 1
           keys = result.map { |x| x.first }.join(' ')
