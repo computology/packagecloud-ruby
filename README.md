@@ -9,6 +9,13 @@ Ruby library for communicating with the [packagecloud.io](https://packagecloud.i
 * [Documentation](http://rubydoc.info/gems/packagecloud-ruby/frames)
 * [Email](mailto:support@packagecloud.io)
 
+## Goals
+
+This library aims to have widest amount of compatibility possible between Ruby versions and implementations. All dependencies are pure Ruby and kept to a minimum to ensure this.
+
+#### Tested Rubies
+  
+  * Ruby 1.8.x, 1.9x, and 2.x
 
 ## Implemented API Endpoints
 
