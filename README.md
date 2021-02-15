@@ -1,6 +1,7 @@
 ## packagecloud-ruby
 
 ![Build Status](https://travis-ci.org/computology/packagecloud-ruby.svg?branch=master "Build Status")
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcomputology%2Fpackagecloud-ruby.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcomputology%2Fpackagecloud-ruby?ref=badge_shield)
 
 
 Ruby library for communicating with the [packagecloud.io](https://packagecloud.io) API.
@@ -133,3 +134,7 @@ go to your [Account Settings](https://packagecloud.io/api_token) to see your API
 Copyright (c) 2014-2018 Computology, LLC
 
 See LICENSE.txt for details.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcomputology%2Fpackagecloud-ruby.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcomputology%2Fpackagecloud-ruby?ref=badge_large)
