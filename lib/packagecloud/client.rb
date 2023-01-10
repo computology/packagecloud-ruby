@@ -1,4 +1,4 @@
-require 'multi_json'
+require 'json'
 require 'mime'
 require 'excon'
 require 'packagecloud/result'
@@ -277,7 +277,7 @@ module Packagecloud
 
       # returns the parsed body of a successful result
       def parsed_json_result(response)
-        prepare_result(response) { |result| result.response = MultiJson.load(response.data[:body]) }
+        prepare_result(response) { |result| result.response = JSON.parse(response.data[:body]) }
       end
 
       def prepare_result(response)

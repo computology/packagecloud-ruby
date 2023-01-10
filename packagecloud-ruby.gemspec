@@ -19,10 +19,9 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency 'excon', '~> 0.40'
   gem.add_runtime_dependency 'json_pure', '~> 2'
-  gem.add_runtime_dependency 'multi_json', '~> 1.0'
   gem.add_runtime_dependency 'mime', '~> 0.4'
 
-  gem.add_development_dependency 'bundler', '~> 1.0'
+  gem.add_development_dependency 'bundler', '~> 2.0'
   gem.add_development_dependency 'rake', '~> 0.8'
   gem.add_development_dependency 'rspec', '~> 2.4'
   gem.add_development_dependency 'simplecov', '~> 0.9'
